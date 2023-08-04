@@ -1,22 +1,20 @@
-use actix_web::{get, App, HttpResponse, HttpServer, Responder};
+use actix_web::{web, App, HttpServer};
 
 use crate::routers::content_birth_routers::ContentBirthRouter;
 
 pub mod routers;
 
-#[get("/")]
-async fn get() -> impl Responder {
-    ContentBirthRouter::get_router().await;
-    HttpResponse::Ok().body("Hello from this get")
-}
+//TODO: Build a route to get information with Birth Date
+//TODO: Search information from Key Value datababse
+//TODO: Build fix prompt by country and language
+//TODO: Integrate with some LLVM
 
 #[actix_web::main]
 async fn main() -> std::io::Result<()> {
-    // Call function from get resource external
-    ContentBirthRouter::get_router().await;
-
-    HttpServer::new(|| App::new().service(get))
-        .bind(("127.0.0.1", 8080))?
-        .run()
-        .await
+    HttpServer::new(|| {
+        App::new().route("/dates/{birthdate}", web::get().to(ContentBirthRouter::get))
+    })
+    .bind(("127.0.0.1", 8080))?
+    .run()
+    .await
 }
