@@ -15,8 +15,13 @@ mod routers;
 #[actix_web::main]
 async fn main() -> std::io::Result<()> {
     // environment log configration
-    env_logger::init_from_env(env_logger::Env::new().default_filter_or("info"));
     dotenv::dotenv().ok();
+
+    if env::var("RUST_LOG").ok().is_none() {
+        env::set_var("RUST_LOG", "conduit=debug,actix_web=info");
+    }
+
+    env_logger::init();
 
     let address = env::var("BIND_ADDRESS").expect("Any address was configured");
 
