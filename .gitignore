@@ -18,5 +18,8 @@ Cargo.lock
 
 /target
 
+# Development Configuration security
+.env
+
 # Data for Development
 .data

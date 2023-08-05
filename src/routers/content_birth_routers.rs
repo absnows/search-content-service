@@ -17,6 +17,7 @@ impl ContentBirthRouter {
             .get(birthdate)
             .expect("Failed to search date value");
 
+        // search information with date
         HttpResponse::Ok().body(content)
     }
 }

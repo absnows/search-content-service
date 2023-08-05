@@ -1,10 +1,11 @@
-use actix_web::{web, App, HttpServer};
+use std::env;
 
 use crate::routers::content_birth_routers::ContentBirthRouter;
-use crate::services::birth_search_service::BirthSearchService;
+use crate::routers::ping_controller::PingController;
 
-pub mod routers;
-pub mod services;
+use actix_web::{middleware::Logger, web, App, HttpServer};
+
+mod routers;
 
 //TODO: Build a route to get information with Birth Date
 //TODO: Search information from Key Value datababse
@@ -13,15 +14,24 @@ pub mod services;
 
 #[actix_web::main]
 async fn main() -> std::io::Result<()> {
-    let birth = BirthSearchService::new();
-    let id = birth.get_id();
+    // environment log configration
+    env_logger::init_from_env(env_logger::Env::new().default_filter_or("info"));
+    dotenv::dotenv().ok();
 
-    dbg!(&id);
+    let address = env::var("BIND_ADDRESS").expect("Any address was configured");
 
-    HttpServer::new(|| {
-        App::new().route("/dates/{birthdate}", web::get().to(ContentBirthRouter::get))
-    })
-    .bind(("127.0.0.1", 8080))?
-    .run()
-    .await
+    HttpServer::new(|| App::new().wrap(Logger::default()).configure(routes))
+        .bind(&address)?
+        .run()
+        .await
+}
+
+fn routes(app: &mut web::ServiceConfig) {
+    app.service(
+        web::scope("/api")
+            .service(
+                web::resource("/dates/{birthdate}").route(web::get().to(ContentBirthRouter::get)),
+            )
+            .service(web::resource("/ping").route(web::get().to(PingController::pong))),
+    );
 }
