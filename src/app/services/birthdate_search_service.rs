@@ -1,5 +1,10 @@
+
+pub mod repositories;
+
 #[derive(Debug)]
-pub struct BirthdateSearchService {}
+pub struct BirthdateSearchService {
+    repository:
+}
 
 impl BirthdateSearchService {
     pub fn new() -> BirthdateSearchService {
