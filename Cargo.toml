@@ -8,6 +8,8 @@ actix-web = "4.3.1"
 derive_more = "0.99.17"
 env_logger = "0.10.0"
 log = "0.4.20"
+r2d2 = "0.8.10"
+r2d2_redis = "0.14.0"
 regex = "1.9.3"
 serde = { version = "1.0.183", features = ["derive"] }
 
