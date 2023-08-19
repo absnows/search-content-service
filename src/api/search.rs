@@ -62,8 +62,8 @@ pub async fn search_by_date(
             if result.is_none() {
                 return Err(SearchError::NoContentWasFoundError);
             }
-
-            let response = SearchResponse::new("200".to_string(), result.unwrap());
+            let response =
+                SearchResponse::new("200".to_string(), result.unwrap().trim().to_string());
             Ok(Json(response))
         }
         false => Err(SearchError::InvalidSearchDateFormatError),
