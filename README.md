@@ -7,7 +7,6 @@ Project Name is a Rust-based web service for searching and retrieving content in
 
 - [Features](#features)
 - [Requirements](#requirements)
-- [Getting Started](#getting-started)
 - [Usage](#usage)
 - [Configuration](#configuration)
 - [Docker Compose](#docker-compose)
@@ -42,11 +41,11 @@ cd search-content-service
 cargo build
 ```
 
-## Install project dependencies:
+## Usage
 
 Start the server:
 ```sh
-cargo build
+cargo run
 ```
 
 ## Access the API in your browser or use tools like curl or Postman:
