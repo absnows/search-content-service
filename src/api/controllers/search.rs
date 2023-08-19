@@ -10,13 +10,12 @@ use crate::repositories::redis::RedisRepository;
 
 #[derive(Debug, Serialize)]
 pub struct SearchResponse {
-    code: String,
     content: String,
 }
 
 impl SearchResponse {
-    pub fn new(code: String, content: String) -> Self {
-        SearchResponse { code, content }
+    pub fn new(content: String) -> Self {
+        SearchResponse { content }
     }
 }
 
@@ -30,7 +29,7 @@ pub async fn search_by_date(
 
     match service.search(date_to_search) {
         Ok(result) => {
-            let response = SearchResponse::new("200".to_string(), result.trim().to_string());
+            let response = SearchResponse::new(result.trim().to_string());
             return Ok(Json(response));
         }
         Err(err) => Err(err),
