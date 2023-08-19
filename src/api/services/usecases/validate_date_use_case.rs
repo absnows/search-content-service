@@ -39,3 +39,41 @@ pub fn validate(date_to_validate: &String) -> bool {
 
     false
 }
+
+mod tests {
+    #[test]
+    fn validate_date_with_error() {
+        use super::validate;
+
+        let date_with_error = "1900-0101".to_string();
+        let is_valid = validate(&date_with_error);
+        assert_eq!(is_valid, false)
+    }
+
+    #[test]
+    fn validate_date_with_februery_error() {
+        use super::validate;
+
+        let date_with_error = "1900-02-31".to_string();
+        let is_valid = validate(&date_with_error);
+        assert_eq!(is_valid, false)
+    }
+
+    #[test]
+    fn validate_date_with_all_sentence_error() {
+        use super::validate;
+
+        let date_with_error = "AAAA".to_string();
+        let is_valid = validate(&date_with_error);
+        assert_eq!(is_valid, false)
+    }
+
+    #[test]
+    fn validate_date() {
+        use super::validate;
+
+        let date_with_error = "1900-01-01".to_string();
+        let is_valid = validate(&date_with_error);
+        assert!(is_valid)
+    }
+}
