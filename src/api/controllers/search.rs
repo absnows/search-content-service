@@ -30,7 +30,7 @@ pub async fn search_by_date(
     match service.search(date_to_search) {
         Ok(result) => {
             let response = SearchResponse::new(result.trim().to_string());
-            return Ok(Json(response));
+            Ok(Json(response))
         }
         Err(err) => Err(err),
     }
