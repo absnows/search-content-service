@@ -18,18 +18,25 @@ pub fn validate(date_to_validate: &String) -> bool {
             .name("month")
             .unwrap()
             .as_str()
-            .parse::<i32>()
+            .parse::<u32>()
             .unwrap();
         let day = captures
             .name("day")
             .unwrap()
             .as_str()
-            .parse::<i32>()
+            .parse::<u32>()
             .unwrap();
 
+        let is_leap_year = |year: i32| year % 4 == 0 && !year % 100 == 0 || year % 400 == 0;
+
         // add validation for february
-        if month == 2 && day > 28 {
-            return false;
+        if month == 2 {
+            if day > 29 {
+                return false;
+            }
+            if day == 29 && !is_leap_year(year) {
+                return false;
+            }
         }
 
         if year >= 1900 && month >= 1 && month <= 12 && day >= 1 && day <= 31 {
@@ -61,6 +68,20 @@ mod tests {
     #[test]
     fn validate_date_with_all_sentence_error() {
         let date_with_error = "AAAA".to_string();
+        let is_valid = validate(&date_with_error);
+        assert_eq!(is_valid, false)
+    }
+
+    #[test]
+    fn validate_date_with_leap_year_february_error() {
+        let date_with_error = "1901-02-29".to_string();
+        let is_valid = validate(&date_with_error);
+        assert_eq!(is_valid, false)
+    }
+
+    #[test]
+    fn validate_date_with_non_leap_year_february_error() {
+        let date_with_error = "2008-02-29".to_string();
         let is_valid = validate(&date_with_error);
         assert_eq!(is_valid, false)
     }
