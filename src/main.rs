@@ -5,7 +5,7 @@ use actix_web::middleware::Logger;
 use actix_web::web::Data;
 use actix_web::{App, HttpServer};
 
-use crate::api::search::search_by_date;
+use crate::api::controllers::search::search_by_date;
 use crate::repositories::redis::{RedisConnection, RedisRepository};
 
 #[actix_web::main]

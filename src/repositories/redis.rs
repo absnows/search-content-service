@@ -2,6 +2,8 @@ use std::time::Duration;
 
 use r2d2_redis::{r2d2::Pool, redis::Commands, RedisConnectionManager};
 
+use super::repository::Repository;
+
 const CACHE_POOL_MAX_OPEN: u32 = 16;
 const CACHE_POOL_MIN_IDLE: u32 = 8;
 const CACHE_POOL_EXPIRE_SECONDS: u64 = 60;
@@ -37,11 +39,16 @@ impl RedisRepository {
     pub fn new(pool: Pool<RedisConnectionManager>) -> Self {
         RedisRepository { pool }
     }
+}
 
-    pub fn get(&self, key: String) -> Option<String> {
-        log::info!("[flow:redis-get][message:search for {}]", key);
+impl<K> Repository<K> for RedisRepository
+where
+    K: ToString,
+{
+    fn get(&self, key: K) -> Option<String> {
+        log::info!("[flow:redis-get][message:search for {}]", key.to_string());
         let mut connection = self.pool.get().unwrap();
-        let r = connection.get(key).unwrap();
+        let r: Option<String> = connection.get(key.to_string()).unwrap();
         return r;
     }
 }
