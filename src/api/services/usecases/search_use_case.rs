@@ -19,38 +19,42 @@ impl<T> SearchUseCase<T> {
     }
 }
 
-// Define a FakeRepository for testing purposes
-struct FakeRepository;
-struct FakeRepositoryFailt;
+#[cfg(test)]
+mod tests {
+    use super::*;
 
-impl<T> Repository<T> for FakeRepository {
-    fn get(&self, _key: T) -> Option<String> {
-        Some("Test Value".to_string())
+    struct FakeRepository;
+    struct FakeRepositoryFailt;
+
+    impl<T> Repository<T> for FakeRepository {
+        fn get(&self, _key: T) -> Option<String> {
+            Some("Test Value".to_string())
+        }
     }
-}
 
-impl<T> Repository<T> for FakeRepositoryFailt {
-    fn get(&self, _key: T) -> Option<String> {
-        None
+    impl<T> Repository<T> for FakeRepositoryFailt {
+        fn get(&self, _key: T) -> Option<String> {
+            None
+        }
     }
-}
 
-#[test]
-fn test_search_use_case_with_value() {
-    let fake_repo: Arc<dyn Repository<String>> = Arc::new(FakeRepository);
-    let search_use_case = SearchUseCase::new(fake_repo);
+    #[test]
+    fn test_search_use_case_with_value() {
+        let fake_repo: Arc<dyn Repository<String>> = Arc::new(FakeRepository);
+        let search_use_case = SearchUseCase::new(fake_repo);
 
-    let result = search_use_case.search("request_key".to_string()).unwrap();
+        let result = search_use_case.search("request_key".to_string()).unwrap();
 
-    assert_eq!(result, "Test Value".to_string());
-}
+        assert_eq!(result, "Test Value".to_string());
+    }
 
-#[test]
-fn test_search_use_case_with_no_value() {
-    let fake_repo: Arc<dyn Repository<String>> = Arc::new(FakeRepositoryFailt);
-    let search_use_case = SearchUseCase::new(fake_repo);
+    #[test]
+    fn test_search_use_case_with_no_value() {
+        let fake_repo: Arc<dyn Repository<String>> = Arc::new(FakeRepositoryFailt);
+        let search_use_case = SearchUseCase::new(fake_repo);
 
-    let result = search_use_case.search("nonexistent_key".to_string());
+        let result = search_use_case.search("nonexistent_key".to_string());
 
-    assert!(result.is_err())
+        assert!(result.is_err())
+    }
 }

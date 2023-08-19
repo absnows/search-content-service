@@ -29,3 +29,44 @@ impl SearchDateService {
         Err(SearchError::InvalidSearchDateFormatError)
     }
 }
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    struct FakeRepository;
+    struct FakeRepositoryFailt;
+
+    impl<T> Repository<T> for FakeRepository {
+        fn get(&self, _key: T) -> Option<String> {
+            Some("Test Value".to_string())
+        }
+    }
+
+    impl<T> Repository<T> for FakeRepositoryFailt {
+        fn get(&self, _key: T) -> Option<String> {
+            None
+        }
+    }
+
+    const DATE_MOCK_TEST: &str = "1900-01-01";
+
+    #[test]
+    fn test_search_with_value() {
+        let fake_repo: Arc<dyn Repository<String>> = Arc::new(FakeRepository);
+        let service = SearchDateService::new(fake_repo);
+
+        let result = service.search(DATE_MOCK_TEST.to_string()).unwrap();
+        assert_eq!(result, "Test Value".to_string())
+    }
+
+    #[test]
+    fn test_search_with_no_value() {
+        let fake_repo: Arc<dyn Repository<String>> = Arc::new(FakeRepositoryFailt);
+        let service = SearchDateService::new(fake_repo);
+
+        let result = service.search(DATE_MOCK_TEST.to_string());
+
+        assert!(result.is_err())
+    }
+}
