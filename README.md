@@ -10,8 +10,6 @@ Project Name is a Rust-based web service for searching and retrieving content in
 - [Usage](#usage)
 - [Configuration](#configuration)
 - [Docker Compose](#docker-compose)
-- [Contributing](#contributing)
-- [License](#license)
 
 ## Features
 
