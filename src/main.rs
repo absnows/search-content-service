@@ -18,7 +18,7 @@ async fn main() -> std::io::Result<()> {
     // Setup Server
     HttpServer::new(move || {
         let logger = Logger::default();
-        let connection_redis = RedisConnection::new("redis://127.0.0.1/".to_string());
+        let connection_redis = RedisConnection::new("redis://127.0.0.1/".to_string()); //TODO: Add environment configuration
         let repository = RedisRepository::new(connection_redis.connection());
         let redis_data = Data::new(repository);
 

@@ -4,7 +4,7 @@ use regex::Regex;
 const REGEX_DATE_PATTERN_VALIDATE: &str =
     r"^(?P<year>\d{4})-(?P<month>0[1-9]|1[0-2])-(?P<day>0[1-9]|[12][0-9]|3[01])$";
 
-pub fn validate(date_to_validate: &String) -> bool {
+pub fn validate(date_to_validate: &str) -> bool {
     let re = Regex::new(REGEX_DATE_PATTERN_VALIDATE).unwrap();
 
     if let Some(captures) = re.captures(date_to_validate) {
@@ -39,7 +39,7 @@ pub fn validate(date_to_validate: &String) -> bool {
             }
         }
 
-        if year >= 1900 && month >= 1 && month <= 12 && day >= 1 && day <= 31 {
+        if year >= 1900 && (1..=12).contains(&month) && (1..=31).contains(&day) {
             return true;
         }
     }

@@ -48,7 +48,6 @@ where
     fn get(&self, key: K) -> Option<String> {
         log::info!("[flow:redis-get][message:search for {}]", key.to_string());
         let mut connection = self.pool.get().unwrap();
-        let r: Option<String> = connection.get(key.to_string()).unwrap();
-        return r;
+        connection.get(key.to_string()).unwrap()
     }
 }
