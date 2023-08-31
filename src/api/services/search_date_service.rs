@@ -60,8 +60,6 @@ mod tests {
         }
     }
 
-    const DATE_MOCK_TEST: &str = "1900-01-01";
-
     #[test]
     fn test_search_with_value() {
         let request_date_mock = String::from("1900-01-01");
